@@ -1,0 +1,20 @@
+{
+  "name": "Notes App",
+  "short_name": "Notes",
+  "start_url": "/login",
+  "display": "standalone",
+  "background_color": "#667eea",
+  "theme_color": "#667eea",
+  "icons": [
+    {
+      "src": "/static/app.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/static/ap.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>{{ name }}</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+
+<body>
+
+<a href="/logout" class="logout">Logout</a>
+
+<div class="container">
+  <h1>📘 {{ name }}</h1>
+
+  <div class="card">
+    <h3>Upload PDF</h3>
+    <form method="POST" enctype="multipart/form-data">
+      <input type="file" name="pdf" accept="application/pdf" required>
+      <button>Upload</button>
+    </form>
+  </div>
+
+  {% for f in files %}
+    <div class="card">
+      <a href="/uploads/{{ session.username }}/{{ name }}/{{ f }}" target="_blank">
+        📄 {{ f }}
+      </a>
+    </div>
+  {% endfor %}
+
+  <div class="card">
+    <a href="/">⬅ Back to Subjects</a>
+  </div>
+</div>
+<script>
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/static/sw.js');
+}
+</script>
+
+</body>
+</html>

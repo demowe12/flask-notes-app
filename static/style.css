@@ -1,0 +1,137 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  min-height: 100vh;
+  color: #333;
+}
+
+h1, h2, h3 {
+  text-align: center;
+  color: white;
+  margin-bottom: 10px;
+}
+
+/* Layout */
+.container {
+  max-width: 1000px;
+  margin: auto;
+  padding: 20px;
+  animation: fadeIn 0.8s ease-in;
+}
+
+/* Cards */
+.card {
+  background: white;
+  padding: 18px;
+  border-radius: 16px;
+  margin: 15px auto;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.18);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 45px rgba(0,0,0,0.25);
+}
+
+/* Forms */
+form {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+input, button {
+  padding: 12px;
+  border-radius: 10px;
+  border: none;
+  margin: 6px;
+  font-size: 15px;
+}
+
+/* Button */
+button {
+  background: #667eea;
+  color: white;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.2s;
+}
+
+button:hover {
+  background: #5a67d8;
+  transform: scale(1.05);
+}
+
+/* Links */
+a {
+  text-decoration: none;
+  color: #667eea;
+  font-weight: 600;
+  word-break: break-word;
+}
+
+/* Logout */
+.logout {
+  position: fixed;
+  top: 15px;
+  right: 20px;
+  color: white;
+  font-weight: bold;
+  z-index: 100;
+}
+
+/* Center login */
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+/* Animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 📱 MOBILE OPTIMIZATION */
+@media (max-width: 768px) {
+
+  h1 {
+    font-size: 1.5rem;
+  }
+
+  .container {
+    padding: 15px;
+  }
+
+  .card {
+    margin: 12px 0;
+    padding: 16px;
+  }
+
+  input, button {
+    width: 100%;
+    font-size: 16px;
+  }
+
+  .logout {
+    position: static;
+    display: block;
+    text-align: right;
+    margin-bottom: 10px;
+  }
+}
