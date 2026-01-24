@@ -1,15 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>My Subjects</title>
+  <title>Subjects</title>
   <link rel="stylesheet" href="/static/style.css">
-  <link rel="manifest" href="/static/manifest.json">
-<meta name="theme-color" content="#667eea">
-
 </head>
-
 <body>
 
 <a href="/logout" class="logout">Logout</a>
@@ -18,9 +14,9 @@
   <h1>📚 My Subjects</h1>
 
   <div class="card">
-    <h3>Add New Subject</h3>
     <form method="POST">
       <input type="text" name="subject" placeholder="Subject name" required>
+      <input type="password" name="action_password" placeholder="Admin password" required>
       <button>Add Subject</button>
     </form>
   </div>
@@ -31,11 +27,6 @@
     </div>
   {% endfor %}
 </div>
-<script>
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('/static/sw.js');
-}
-</script>
 
 </body>
 </html>

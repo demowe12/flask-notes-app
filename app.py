@@ -7,6 +7,9 @@ import os
 app = Flask(__name__)
 app.secret_key = "supersecretkey"
 
+# 🔒 PASSWORD REQUIRED FOR ADD / UPLOAD
+ADMIN_ACTION_PASSWORD = "kali@123"
+
 # ================= DATABASE =================
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///notes.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -28,17 +31,15 @@ class Subject(db.Model):
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
+        user = User.query.filter_by(
+            username=request.form['username']
+        ).first()
 
-        user = User.query.filter_by(username=username).first()
-
-        if user and check_password_hash(user.password, password):
+        if user and check_password_hash(user.password, request.form['password']):
             session['user_id'] = user.id
             session['username'] = user.username
             return redirect('/')
-        else:
-            return "Invalid credentials"
+        return "Invalid credentials"
 
     return render_template('login.html')
 
@@ -55,15 +56,16 @@ def home():
         return redirect('/login')
 
     if request.method == 'POST':
-        subject_name = request.form['subject']
-        if subject_name:
-            db.session.add(
-                Subject(
-                    name=subject_name,
-                    user_id=session['user_id']
-                )
+        if request.form.get('action_password') != ADMIN_ACTION_PASSWORD:
+            return "Wrong admin password"
+
+        db.session.add(
+            Subject(
+                name=request.form['subject'],
+                user_id=session['user_id']
             )
-            db.session.commit()
+        )
+        db.session.commit()
         return redirect('/')
 
     subjects = Subject.query.filter_by(
@@ -82,6 +84,9 @@ def subject_page(name):
     os.makedirs(folder, exist_ok=True)
 
     if request.method == 'POST':
+        if request.form.get('action_password') != ADMIN_ACTION_PASSWORD:
+            return "Wrong admin password"
+
         pdf = request.files['pdf']
         if pdf:
             pdf.save(os.path.join(folder, pdf.filename))
@@ -100,13 +105,13 @@ if __name__ == '__main__':
     with app.app_context():
         db.create_all()
 
-        # CREATE DEFAULT USER (RUNS ONLY ONCE)
         if not User.query.filter_by(username="admin").first():
-            admin = User(
-                username="admin",
-                password=generate_password_hash("1234")
+            db.session.add(
+                User(
+                    username="admin",
+                    password=generate_password_hash("1234")
+                )
             )
-            db.session.add(admin)
             db.session.commit()
 
     app.run(debug=True)

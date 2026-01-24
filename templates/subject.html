@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{{ name }}</title>
   <link rel="stylesheet" href="/static/style.css">
 </head>
-
 <body>
 
 <a href="/logout" class="logout">Logout</a>
@@ -14,10 +14,10 @@
   <h1>📘 {{ name }}</h1>
 
   <div class="card">
-    <h3>Upload PDF</h3>
     <form method="POST" enctype="multipart/form-data">
       <input type="file" name="pdf" accept="application/pdf" required>
-      <button>Upload</button>
+      <input type="password" name="action_password" placeholder="Admin password" required>
+      <button>Upload PDF</button>
     </form>
   </div>
 
@@ -30,14 +30,9 @@
   {% endfor %}
 
   <div class="card">
-    <a href="/">⬅ Back to Subjects</a>
+    <a href="/">⬅ Back</a>
   </div>
 </div>
-<script>
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('/static/sw.js');
-}
-</script>
 
 </body>
 </html>
