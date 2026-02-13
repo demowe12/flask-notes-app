@@ -7,10 +7,19 @@
 body {
   margin: 0;
   font-family: 'Poppins', sans-serif;
-  background: linear-gradient(135deg, #667eea, #764ba2);
+  background: black;
   min-height: 100vh;
-  color: #333;
+  color: #00ff00;
 }
+
+/* Matrix canvas */
+#matrix {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: -1;
+}
+
 
 h1, h2, h3 {
   text-align: center;
@@ -134,4 +143,6 @@ a {
     text-align: right;
     margin-bottom: 10px;
   }
+
 }
+
