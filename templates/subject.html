@@ -1,78 +1,86 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{{ name }}</title>
-  <link rel="stylesheet" href="/static/style.css">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ name }} - StudyOS</title>
+<style>
+body { background:#121212; color:white; font-family:Arial; padding:20px; }
+.card { background:#1e1e1e; padding:20px; border-radius:15px; margin-top:15px; }
+input, textarea {
+    width:100%; padding:10px; border-radius:10px;
+    border:none; margin-top:10px; background:#2c2c2c; color:white;
+}
+button {
+    margin-top:10px; padding:10px;
+    border:none; border-radius:20px;
+    background:#1DB954; color:white; cursor:pointer;
+}
+.tag {
+    display:inline-block; background:#333;
+    padding:5px 10px; border-radius:15px;
+    font-size:12px; margin-top:8px; margin-right:5px;
+}
+.delete-btn { background:red; }
+</style>
 </head>
 <body>
 
-<canvas id="matrix"></canvas>
+<h1>{{ name }}</h1>
+<a href="/" style="color:#1DB954;">⬅ Back</a>
 
-<a href="/logout" class="logout">Logout</a>
-
-<div class="container">
-  <h1>📘 {{ name }}</h1>
-
-  <div class="card">
-    <form method="POST" enctype="multipart/form-data">
-      <input type="file" name="pdf" accept="application/pdf" required>
-      <input type="password" name="action_password" placeholder="Admin password" required>
-      <button>Upload PDF</button>
-    </form>
-  </div>
-
-  {% for f in files %}
-    <div class="card">
-      <a href="/uploads/{{ session.username }}/{{ name }}/{{ f }}" target="_blank">
-        📄 {{ f }}
-      </a>
-    </div>
-  {% endfor %}
-
-  <div class="card">
-    <a href="/">⬅ Back</a>
-  </div>
+<h2>📝 Add Note</h2>
+<div class="card">
+<form method="POST">
+<input type="hidden" name="type" value="note">
+<input type="text" name="title" placeholder="Title" required>
+<textarea name="content" rows="5" placeholder="Write your note..." required></textarea>
+<input type="text" name="tags" placeholder="Tags (comma separated)">
+<button>Add Note</button>
+</form>
 </div>
 
-<script>
-const canvas = document.getElementById("matrix");
-const ctx = canvas.getContext("2d");
+<h2>📚 Notes</h2>
+{% for note in notes %}
+<div class="card">
+<h3>{{ note.title }}</h3>
+<p>{{ note.content }}</p>
 
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
+{% if note.tags %}
+{% for tag in note.tags.split(',') %}
+<span class="tag">#{{ tag.strip() }}</span>
+{% endfor %}
+{% endif %}
 
-const letters = "01ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-const fontSize = 16;
-const columns = canvas.width / fontSize;
+<p style="font-size:12px;">{{ note.created_at.strftime('%d %b %Y') }}</p>
 
-const drops = [];
-for (let i = 0; i < columns; i++) {
-    drops[i] = 1;
-}
+<a href="/edit_note/{{ note.id }}" style="color:#1DB954;">✏ Edit</a>
+<a href="/delete_note/{{ note.id }}" style="color:red;">🗑 Delete</a>
+</div>
+{% endfor %}
 
-function draw() {
-    ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+<h2>📄 Upload PDF</h2>
+<div class="card">
+<form method="POST" enctype="multipart/form-data">
+<input type="hidden" name="type" value="pdf">
+<input type="password" name="action_password" placeholder="Admin Password" required>
+<input type="file" name="pdf" required>
+<button>Upload</button>
+</form>
+</div>
 
-    ctx.fillStyle = "#0f0";
-    ctx.font = fontSize + "px monospace";
+{% for file in files %}
+<div class="card">
+<a href="/uploads/{{ session['username'] }}/{{ name }}/{{ file }}" target="_blank" style="color:#1DB954;">
+{{ file }}
+</a>
 
-    for (let i = 0; i < drops.length; i++) {
-        const text = letters[Math.floor(Math.random() * letters.length)];
-        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+<form method="POST" action="/delete_pdf/{{ name }}/{{ file }}">
+<input type="password" name="action_password" placeholder="Admin Password" required>
+<button class="delete-btn">Delete PDF</button>
+</form>
 
-        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
-            drops[i] = 0;
-        }
-
-        drops[i]++;
-    }
-}
-
-setInterval(draw, 33);
-</script>
+</div>
+{% endfor %}
 
 </body>
 </html>

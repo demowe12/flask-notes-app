@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Edit Note</title>
+<style>
+body { background:#121212; color:white; font-family:Arial; padding:20px; }
+input, textarea {
+    width:100%; padding:10px; border-radius:10px;
+    border:none; margin-top:10px; background:#2c2c2c; color:white;
+}
+button {
+    margin-top:10px; padding:10px;
+    border:none; border-radius:20px;
+    background:#1DB954; color:white; cursor:pointer;
+}
+</style>
+</head>
+<body>
+
+<h2>Edit Note</h2>
+
+<form method="POST">
+<input type="text" name="title" value="{{ note.title }}" required>
+<textarea name="content" rows="6" required>{{ note.content }}</textarea>
+<input type="text" name="tags" value="{{ note.tags }}">
+<button>Save Changes</button>
+</form>
+
+</body>
+</html>
